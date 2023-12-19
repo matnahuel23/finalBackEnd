@@ -1,0 +1,202 @@
+paths:
+  /users:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - Usuario
+      responses:
+        "200":
+          description: Los usuarios fueron obtenidos correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+    post:
+      summary: Crea un nuevo usuario
+      tags:
+        - Usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  description: Nombre del usuario.
+                last_name:
+                  type: string
+                  description: Apellido del usuario.
+                email:
+                  type: string
+                  format: email
+                  description: Correo electrónico del usuario. (INGRESE EL MAIL QUE TRAJO EL GET POR ID)
+                age:
+                  type: number
+                  description: Edad del usuario.
+                role:
+                  type: string
+                  enum: ["admin", "premium", "user"]
+                  default: "user"
+                  description: Rol del usuario. (Deje una de las siguientes opciones "admin", "premium", "user")
+                password:
+                  type: string
+                  description: Contraseña del usuario encriptada "hasheada con bcrypt". (No se puede repetir el correo electrónico)
+              example:
+                first_name: "Juan"
+                last_name: "Perez"
+                email: "john.doe@example.com"
+                age: 25
+                role: "user"
+                password: "12345"
+      responses:
+        "201":
+          description: Usuario creado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+
+  /users/{uid}:
+    get:
+      summary: Obtiene un solo usuario a partir de su ID
+      tags:
+        - Usuario
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que se desea solicitar.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario encontrado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+    put:
+      summary: Actualiza un usuario existente
+      tags:
+        - Usuario
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que se desea actualizar.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  description: Nombre del usuario.
+                last_name:
+                  type: string
+                  description: Apellido del usuario.
+                email:
+                  type: string
+                  format: email
+                  description: Correo electrónico del usuario. (INGRESE EL MAIL QUE TRAJO EL GET POR ID)
+                age:
+                  type: number
+                  description: Edad del usuario.
+                role:
+                  type: string
+                  enum: ["admin", "premium", "user"]
+                  default: "user"
+                  description: Rol del usuario. (Deje una de las siguientes opciones "admin", "premium", "user")
+                password:
+                  type: string
+                  description: Contraseña del usuario encriptada "hasheada con bcrypt". (No se puede repetir el correo electrónico)
+              example:
+                first_name: "Juan"
+                last_name: "Perez"
+                email: "john.doe@example.com"
+                age: 25
+                role: "user"
+                password: "12345"
+      responses:
+        "200":
+          description: Usuario actualizado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+    delete:
+      summary: Elimina un usuario existente
+      tags:
+        - Usuario
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que se desea eliminar.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Usuario eliminado exitosamente.
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado de Mongo.
+        first_name:
+          type: string
+          description: Nombre del usuario.
+        last_name:
+          type: string
+          description: Apellido del usuario.
+        email:
+          type: string
+          format: email
+          description: Correo electrónico del usuario.
+        age:
+          type: number
+          description: Edad del usuario.
+        role:
+          type: string
+          enum: ["user", "admin", "premium"]
+          default: "user"
+          description: Rol del usuario.
+        password:
+          type: string
+          description: Contraseña del usuario encriptada "hasheada con bcrypt".
+        cart:
+          type: string
+          description: Id del carrito asociado al usuario.
+      example:
+        _id: "5f885be3b547644035g12r8"
+        first_name: "Juan"
+        last_name: "Perez"
+        email: "john.doe@example.com"
+        age: 25
+        role: "user"
+        password: "12345"
+        cart: "653d098f832c141b529eh2f"

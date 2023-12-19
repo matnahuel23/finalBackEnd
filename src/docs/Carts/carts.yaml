@@ -1,0 +1,134 @@
+paths:
+  /carts:
+    get:
+      summary: Obtiene todos los carritos
+      tags:
+        - Carritos
+      responses:
+        "200":
+          description: Los carritos fueron obtenidos correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+
+    post:
+      summary: Crea un nuevo carrito
+      tags:
+        - Carritos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "201":
+          description: Carrito creado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+
+  /carts/{cartId}:
+    get:
+      summary: Obtiene un solo carrito a partir de su ID
+      tags:
+        - Carritos
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID del carrito que se desea solicitar.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito encontrado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+
+    put:
+      summary: Actualiza un carrito existente
+      tags:
+        - Carritos
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID del carrito que se desea actualizar.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "200":
+          description: Carrito actualizado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+
+    delete:
+      summary: Elimina un carrito existente
+      tags:
+        - Carritos
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID del carrito que se desea eliminar.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Carrito eliminado exitosamente.
+        "404":
+          description: Carrito no encontrado.
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo con la base de datos.
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ID del producto en el carrito
+              quantity:
+                type: number
+                description: Cantidad del producto en el carrito
+          description: Lista de productos en el carrito
+        total:
+          type: number
+          description: Total del carrito
+
+      example:
+        products:
+          - product: "5f885be3b547644035f26353"
+            quantity: 2
+          - product: "5f885be3b547644035f26354"
+            quantity: 1
+        total: 45.99

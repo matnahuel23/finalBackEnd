@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Documentos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="/scripts/documentScript.js"></script>
+</head>
+<body>
+    <h1>Documentos</h1>
+
+    <form id="documentForm" action="/users/{{_id}}/documents" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label>
+                <input type="radio" name="fileType" value="identification" checked>
+                Identificación
+            </label>
+        </div>
+        <div class="mb-3">
+            <label>
+                <input type="radio" name="fileType" value="addressCertification">
+                Comprobante de domicilio
+            </label>
+        </div>
+        <div class="mb-3">
+            <label>
+                <input type="radio" name="fileType" value="accountStatement">
+                Comprobante de estado de cuenta
+            </label>
+        </div>
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="customFile" name="file" accept=".pdf, .doc, .docx, .jpg, .jpeg">
+            <label class="custom-file-label" for="customFile">Seleccionar archivo</label>
+        </div>
+        <input type="hidden" name="fileTypeName" id="fileTypeName" value="">
+        <button type="submit" class="btn btn-primary">Subir Archivo</button>
+    </form>
+
+    <a href="/logout" class="btn btn-danger float-right">Desloguearse</a>
+    <a href="/products" class="btn btn-success float-right">Volver</a>
+    <button id="premiumButton" class="btn btn-info float-right">Ser Premium</button>
+    <script>
+        // Maneja el cambio en el tipo de archivo seleccionado
+        $('#customFile').change(function () {
+            // Actualiza la etiqueta con el nombre del archivo seleccionado
+            var fileName = $(this).val().split('\\').pop(); // Obtén solo el nombre del archivo (sin la ruta completa)
+            $('.custom-file-label').text(fileName);
+        }); 
+        
+        $('#premiumButton').click(async function () {
+            try {
+                const response = await fetch(`/users/premium/{{_id}}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    if (responseData.message) {
+                        // Muestra un SweetAlert de éxito
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: responseData.message,
+                            timer: 2000
+                        });
+                    } else {
+                        // Muestra un SweetAlert de error
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: responseData.error || 'Hubo un error al actualizar a usuario premium.',
+                            timer: 2000
+                        });
+                    }
+                } else {
+                    // Muestra un SweetAlert de error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un error al actualizar a usuario premium.',
+                        timer: 2000
+                    });
+                }
+            } catch (error) {
+                // Muestra un SweetAlert de error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error al actualizar a usuario premium.',
+                    timer: 2000
+                });
+            }
+        });
+    </script>
+</body>
+</html>
