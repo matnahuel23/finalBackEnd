@@ -16,12 +16,11 @@ password: 1
 
 ![Vistas de administrador](src/public/prints/1-%20admin.png)
 
-
-![Badge en Desarollo](https://img.shields.io/badge/CARGA-DE%20DOCUMENTOS-yellow)
-
 * Boton para ver todos los usuarios por mail y rol
 
 ![todos los usuarios](src/public/prints/7-%20todos%20los%20usuarios.png)
+
+![Badge en Desarollo](https://img.shields.io/badge/ElIMINACION-USUARIOS%20INACTIVOS-yellow)
 
 * Eliminación de los usuarios inactivos, en este caso configurado para logout de 1 minuto. Opcion disponible para el administrador.
 
@@ -30,6 +29,8 @@ password: 1
 * Mail indicandole a cada usuario particularmente que su cuenta ha sido eliminada.
 
 ![mail de eliminacion](src/public/prints/3-%20mail%20de%20eliminacion%20de%20cuenta.png)
+
+![Badge en Desarollo](https://img.shields.io/badge/ElIMINACION-%20PRODUCTO-blue)
 
 * Producto con detalle de propietario ADMIN o mail de usuario Premium que lo creo.
 
@@ -43,7 +44,4 @@ password: 1
 
 ![mail de eliminacion de producto](src/public/prints/6-%20mail%20producto%20de%20premium%20eliminado%20.png)
 
-
-
-
-## :hammer QUE LA FUERZA ME ACOMPAÑE :hammer
+## :hammer: :hammer: :hammer: QUE LA FUERZA ME ACOMPAÑE!!! :hammer: :hammer: :hammer:
