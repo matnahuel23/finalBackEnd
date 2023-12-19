@@ -122,11 +122,11 @@ deleteProduct = async (req, res) => {
       const result = await productsService.deleteProduct({ _id: pid });
   
       // Si el propietario no es "admin", enviar un correo electrónico
-      if (role !== "admin") {
+      if (product.owner !== "admin") {
         const emailContent = `El producto "${product.title}" ha sido eliminado correctamente.`;
         const emailSubject = "Producto Eliminado";
   
-        await sendEmail(email, emailContent, emailSubject);
+        await sendEmail(product.owner, emailContent, emailSubject);
       }
   
       res.send({ result: "success", message: 'Producto eliminado correctamente.', payload: result });
