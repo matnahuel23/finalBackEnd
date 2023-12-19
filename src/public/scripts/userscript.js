@@ -137,3 +137,52 @@ if (findFormEmail) {
         }
     });
 }
+
+// Función para buscar todos los usuarios
+async function findAllUsers() {
+    const resultContainer = document.getElementById("search-result-email");
+
+    try {
+        const response = await fetch(`/users`, {
+            method: "GET",
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data.result === "success") {
+                const users = data.payload;
+                if (users.length > 0) {
+                    resultContainer.innerHTML = `
+                    <h2>Lista de Usuarios</h2>
+                    <ul>
+                        ${users.map(user => `<li>${user.email} - Rol: ${user.role}</li>`).join('')}
+                    </ul>
+                    `;
+                } else {
+                    resultContainer.innerHTML = "<p>No se encontraron usuarios.</p>";
+                }
+            } else {
+                console.error("Error al obtener la lista de usuarios:", data.error);
+            }
+        } else {
+            console.error("Error al obtener la lista de usuarios:", response.status);
+        }
+    } catch (error) {
+        console.error("Error al obtener la lista de usuarios:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error al obtener la lista de usuarios.",
+        });
+    }
+}
+
+// Obtener el botón "Buscar Todos"
+const findAllUsersButton = document.getElementById("find-all-users");
+
+// Verificar si el botón existe antes de asignar el evento clic
+if (findAllUsersButton) {
+    findAllUsersButton.addEventListener("click", async () => {
+        await findAllUsers();
+    });
+}
