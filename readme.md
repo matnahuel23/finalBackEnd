@@ -46,4 +46,4 @@ password: 1
 
 
 
-## :hammer :hammer :hammer QUE LA FUERZA ME ACOMPAÑE :hammer :hammer :hammer
+## :hammer QUE LA FUERZA ME ACOMPAÑE :hammer
