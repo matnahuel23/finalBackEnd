@@ -323,6 +323,21 @@ clearUsers: async (req, res) => {
         // Encuentra y elimina los usuarios que no han tenido conexión en los últimos 2 días
         const result = await usersService.clearUsers(twoDaysAgo);
 
+        // Verificar si result.deletedUsers existe y es un iterable
+        const users = result.deletedUsers || [];
+
+        for (const user of users) {
+          const emailContent = `
+            Su cuenta ha sido eliminada debido a inactividad durante los últimos 2 días.
+            Gracias por usar nuestro servicio.
+          `;
+
+          const emailSubject = "Cuenta Eliminada";
+
+          // Puedes ajustar la función sendEmail para manejar imágenes como adjuntos si es necesario
+          await sendEmail(user.email, emailContent, emailSubject);
+        }
+
         res.json({ status: 'Usuarios eliminados correctamente', deletedUsers: result.deletedCount });
     } catch (error) {
         console.error(error);
