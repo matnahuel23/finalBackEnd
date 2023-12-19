@@ -319,13 +319,14 @@ clearUsers: async (req, res) => {
     try {
         const twoDaysAgo = new Date();
         // twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-        // Modifique a 2 min para poder hacer pruebas, arriba dice 2 dias
-        twoDaysAgo.setDate(twoDaysAgo.getMinutes() - 2);
+        // Modifique a 1 min para poder hacer pruebas, arriba dice 2 dias
+        twoDaysAgo.setMinutes(twoDaysAgo.getMinutes() - 1);
+        // Encuentra los usuarios que no han tenido conexión
+        const usersToDelete = await usersService.findUsersToDelete(twoDaysAgo);
         // Encuentra y elimina los usuarios que no han tenido conexión en los últimos 2 días
         const result = await usersService.clearUsers(twoDaysAgo);
-
-        // Verificar si result.deletedUsers existe y es un iterable
-        const users = result.deletedUsers || [];
+        // Verificar si usersToDelete existe y es un iterable
+        const users = usersToDelete || [];
 
         for (const user of users) {
           const emailContent = `

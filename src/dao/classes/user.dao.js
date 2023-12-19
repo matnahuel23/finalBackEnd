@@ -60,6 +60,19 @@ module.exports =  class User {
         }
     }
 
+    findUsersToDelete = async (date) => {
+        try {
+            const usersToDelete = await userModel.find({
+                'last_connection.logout': { $lt: date }
+            });
+    
+            return usersToDelete;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error al buscar usuarios para eliminar');
+        }
+    }
+    
     clearUsers = async (date) => {
         try {
             const result = await userModel.deleteMany({
