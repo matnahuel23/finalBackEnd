@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken');
 const { cookiePass } = require('../config/config.js')
 const admin = config.adminName
 const path = require('path');
-const { ObjectId } = require('mongoose').Types;
 const multerConfig  = require('../utils/multer.js')
 
 const generateRandomToken = (length) => {
@@ -315,7 +314,22 @@ upgradeUserToPremium: async (req, res) => {
         console.error(error);
         return res.status(500).json({ error: 'Error interno del servidor' });
     }    
+},
+clearUsers: async (req, res) => {
+    try {
+        const twoDaysAgo = new Date();
+        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+        // Encuentra y elimina los usuarios que no han tenido conexión en los últimos 2 días
+        const result = await usersService.clearUsers(twoDaysAgo);
+
+        res.json({ status: 'Usuarios eliminados correctamente', deletedUsers: result.deletedCount });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: 'Error', error: 'Error al limpiar los usuarios' });
+    }
 }
+
 
 }
    

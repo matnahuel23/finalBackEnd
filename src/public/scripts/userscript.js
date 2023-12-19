@@ -186,3 +186,35 @@ if (findAllUsersButton) {
         await findAllUsers();
     });
 }
+
+// Obtener el botón "Limpiar"
+const clearSearchButton = document.getElementById("clear-search");
+
+// Verificar si el botón existe antes de asignar el evento clic
+if (clearSearchButton) {
+    clearSearchButton.addEventListener("click", async () => {
+        // Realizar la solicitud DELETE a la ruta /users/clear
+        try {
+            const clearResponse = await fetch(`/users/clear`, {
+                method: "DELETE",
+            });
+            console.log(clearResponse)
+            if (clearResponse.ok) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Eliminacion de Usuarios",
+                    text: "Los usuarios inactivos han sido eliminados exitosamente.",
+                });
+            } else {
+                console.error("Error al eliminar usuarios inactivos:", clearResponse.status);
+            }
+        } catch (error) {
+            console.error("Error al eliminar usuarios inactivos:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Error al eliminar usuarios inactivos.",
+            });
+        }
+    });
+}

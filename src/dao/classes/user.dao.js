@@ -59,4 +59,17 @@ module.exports =  class User {
             return null
         }
     }
+
+    clearUsers = async (date) => {
+        try {
+            const result = await userModel.deleteMany({
+                'last_connection.logout': { $lt: date }
+            });    
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error al limpiar usuarios en el servicio');
+        }
+    };
+    
 }
