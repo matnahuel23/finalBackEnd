@@ -318,8 +318,9 @@ upgradeUserToPremium: async (req, res) => {
 clearUsers: async (req, res) => {
     try {
         const twoDaysAgo = new Date();
-        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
+        // twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+        // Modifique a 2 min para poder hacer pruebas, arriba dice 2 dias
+        twoDaysAgo.setDate(twoDaysAgo.getMinutes() - 2);
         // Encuentra y elimina los usuarios que no han tenido conexión en los últimos 2 días
         const result = await usersService.clearUsers(twoDaysAgo);
 
