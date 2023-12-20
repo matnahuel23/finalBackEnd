@@ -320,17 +320,19 @@ upgradeUserToPremium: async (req, res) => {
 },
 clearUsers: async (req, res) => {
     try {
-        const twoDaysAgo = new Date();
+        const timeLogOut = new Date();
         // twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
         // Modifique a 1 min para poder hacer pruebas, arriba dice 2 dias
-        twoDaysAgo.setMinutes(twoDaysAgo.getMinutes() - 1);
+        timeLogOut.setMinutes(timeLogOut.getMinutes() - 1);
+        // Agrego Login mayor a 30 min
+        const timeLogIn = new Date();
+        timeLogIn.setMinutes(timeLogIn.getMinutes() - 30);
         // Encuentra los usuarios que no han tenido conexión
-        const usersToDelete = await usersService.findUsersToDelete(twoDaysAgo);
+        const usersToDelete = await usersService.findUsersToDelete(timeLogOut, timeLogIn);
         // Encuentra y elimina los usuarios que no han tenido conexión en los últimos 2 días
-        const result = await usersService.clearUsers(twoDaysAgo);
+        const result = await usersService.clearUsers(timeLogOut, timeLogIn);
         // Verificar si usersToDelete existe y es un iterable
         const users = usersToDelete || [];
-
         for (const user of users) {
           const emailContent = `
             Su cuenta ha sido eliminada debido a inactividad durante los últimos 2 días.

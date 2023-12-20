@@ -60,12 +60,19 @@ module.exports =  class User {
         }
     }
 
-    findUsersToDelete = async (date) => {
+    findUsersToDelete = async (dateLogOut, dateLogIn) => {
         try {
             const usersToDelete = await userModel.find({
-                'last_connection.logout': { $lt: date }
-            });
-    
+                $and: [
+                    {
+                        $or: [
+                            { 'last_connection.logout': { $lt: dateLogOut }},
+                            { 'last_connection.login': { $lt: dateLogIn } }
+                        ]
+                    },
+                    { role: { $ne: 'admin' } } // No eliminar usuarios con rol 'admin'
+            ]
+        });
             return usersToDelete;
         } catch (error) {
             console.error(error);
@@ -73,10 +80,13 @@ module.exports =  class User {
         }
     }
     
-    clearUsers = async (date) => {
+    clearUsers = async (dateLogOut, dateLogIn) => {
         try {
             const result = await userModel.deleteMany({
-                'last_connection.logout': { $lt: date }
+                $or: [
+                    { 'last_connection.logout': { $lt: dateLogOut } },
+                    { 'last_connection.login': { $lt: dateLogIn } }
+                ]
             });    
             return result;
         } catch (error) {
@@ -84,5 +94,6 @@ module.exports =  class User {
             throw new Error('Error al limpiar usuarios en el servicio');
         }
     };
+    
     
 }
