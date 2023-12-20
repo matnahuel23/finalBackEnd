@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Documentos</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -8,27 +10,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="/scripts/documentScript.js"></script>
 </head>
-<body>
-    <h1>Documentos</h1>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h1 class="mb-4">Documentos</h1>
 
     <form id="documentForm" action="/users/{{_id}}/documents" method="post" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label>
-                <input type="radio" name="fileType" value="identification" checked>
-                Identificación
-            </label>
+        <div class="form-check mb-3">
+            <input type="radio" class="form-check-input" name="fileType" value="identification" id="identification" checked>
+            <label class="form-check-label" for="identification">Identificación</label>
         </div>
-        <div class="mb-3">
-            <label>
-                <input type="radio" name="fileType" value="addressCertification">
-                Comprobante de domicilio
-            </label>
+        <div class="form-check mb-3">
+            <input type="radio" class="form-check-input" name="fileType" value="addressCertification" id="addressCertification">
+            <label class="form-check-label" for="addressCertification">Comprobante de domicilio</label>
         </div>
-        <div class="mb-3">
-            <label>
-                <input type="radio" name="fileType" value="accountStatement">
-                Comprobante de estado de cuenta
-            </label>
+        <div class="form-check mb-3">
+            <input type="radio" class="form-check-input" name="fileType" value="accountStatement" id="accountStatement">
+            <label class="form-check-label" for="accountStatement">Comprobante de estado de cuenta</label>
         </div>
         <div class="custom-file mb-3">
             <input type="file" class="custom-file-input" id="customFile" name="file" accept=".pdf, .doc, .docx, .jpg, .jpeg">
@@ -38,55 +37,48 @@
         <button type="submit" class="btn btn-primary">Subir Archivo</button>
     </form>
 
-    <a href="/logout" class="btn btn-danger float-right">Desloguearse</a>
-    <a href="/products" class="btn btn-success float-right">Volver</a>
-    <button id="premiumButton" class="btn btn-info float-right">Ser Premium</button>
-    <script>
-        // Maneja el cambio en el tipo de archivo seleccionado
-        $('#customFile').change(function () {
-            // Actualiza la etiqueta con el nombre del archivo seleccionado
-            var fileName = $(this).val().split('\\').pop(); // Obtén solo el nombre del archivo (sin la ruta completa)
-            $('.custom-file-label').text(fileName);
-        }); 
-        
-        $('#premiumButton').click(async function () {
-            try {
-                const response = await fetch(`/users/premium/{{_id}}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+    <a href="/logout" class="btn btn-danger mt-3 float-right">Desloguearse</a>
+    <a href="/products" class="btn btn-success mt-3 mr-3 float-right">Volver</a>
+    <button id="premiumButton" class="btn btn-info mt-3 mr-3 float-right">Ser Premium</button>
+</div>
 
-                if (response.ok) {
-                    const responseData = await response.json();
-                    if (responseData.message) {
-                        // Muestra un SweetAlert de éxito
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: responseData.message,
-                            timer: 2000
-                        });
-                    } else {
-                        // Muestra un SweetAlert de error
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: responseData.error || 'Hubo un error al actualizar a usuario premium.',
-                            timer: 2000
-                        });
-                    }
+<script>
+    // Maneja el cambio en el tipo de archivo seleccionado
+    $('#customFile').change(function () {
+        // Actualiza la etiqueta con el nombre del archivo seleccionado
+        var fileName = $(this).val().split('\\').pop(); // Obtén solo el nombre del archivo (sin la ruta completa)
+        $('.custom-file-label').text(fileName);
+    }); 
+
+    $('#premiumButton').click(async function () {
+        try {
+            const response = await fetch(`/users/premium/{{_id}}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.message) {
+                    // Muestra un SweetAlert de éxito
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: responseData.message,
+                        timer: 2000
+                    });
                 } else {
                     // Muestra un SweetAlert de error
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Hubo un error al actualizar a usuario premium.',
+                        text: responseData.error || 'Hubo un error al actualizar a usuario premium.',
                         timer: 2000
                     });
                 }
-            } catch (error) {
+            } else {
                 // Muestra un SweetAlert de error
                 Swal.fire({
                     icon: 'error',
@@ -95,7 +87,17 @@
                     timer: 2000
                 });
             }
-        });
-    </script>
+        } catch (error) {
+            // Muestra un SweetAlert de error
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un error al actualizar a usuario premium.',
+                timer: 2000
+            });
+        }
+    });
+</script>
+
 </body>
 </html>
