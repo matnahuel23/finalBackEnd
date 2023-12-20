@@ -129,4 +129,4 @@ module.exports = {
     createTicket,
     updateTicket,
     deleteTicket,
-  };
+};

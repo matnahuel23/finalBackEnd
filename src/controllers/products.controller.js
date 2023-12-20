@@ -134,7 +134,7 @@ deleteProduct = async (req, res) => {
       console.error(`Error: ${error}`);
       res.send({ status: "error", error: 'Error al eliminar el producto.' });
     }
-  };
+};
 
 module.exports = {
     getProducts,
@@ -143,4 +143,4 @@ module.exports = {
     createProducts,
     updateProduct,
     deleteProduct,
-  };
+};

@@ -95,5 +95,4 @@ module.exports =  class User {
         }
     };
     
-    
 }
