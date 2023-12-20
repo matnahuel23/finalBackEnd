@@ -206,7 +206,10 @@ restorePass : async (req, res) => {
     const token = jwt.sign({ email }, cookiePass, { expiresIn: '1h' });
 
     // Incluye el token en el enlace del correo electrónico
-    const resetPasswordLink = `http://localhost:8080/restorepassword?token=${token}`;
+    // LocalHost
+    // const resetPasswordLink = `http://localhost:8080/restorepassword?token=${token}`;
+    // Productivo
+    const resetPasswordLink = `https://finalbackend-production-fe31.up.railway.app/restorepassword?token=${token}`;
 
     // Envía el correo electrónico con el enlace de restablecimiento
     const emailContent = await sendResetPasswordEmail(resetPasswordLink);
