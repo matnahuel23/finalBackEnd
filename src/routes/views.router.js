@@ -90,7 +90,7 @@ router.get('/session', (req, res) => {
     }
 });
 
-router.get('https://github.com', passport.authenticate('github',{failureRedirect:'login'}), async(req,res) => {
+router.get('/auth/github', passport.authenticate('github',{failureRedirect:'login'}), async(req,res) => {
     // Nuestra estrategia nos devolvera al usuario, solo lo agregamos a nuestro objeto de sesión.
     req.session.user = req.user
     res.redirect('/products');
